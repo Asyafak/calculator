@@ -10,23 +10,26 @@ const sideBar = document.querySelector('.side-bar');
 const hystoryBars = document.querySelector('.hystory-bars');
 let tagBaru;
 
+//function click button hystory
 btnHystory.addEventListener('click', () => {
   sideBar.classList.toggle('active');
   sideBar.classList.contains('active') ? btnHystory.innerText = 'keyboard' : btnHystory.innerText = 'hystory';
 })
 
-
+// function click button clear hystory
 btnClearHystory.addEventListener('click', () => {
   hystoryBars.innerHTML = '';
 });
 
+// function hystory bars
 hystoryBars.addEventListener('click', e => {
   if (hasil == 1) {
     hasil = 0;
     inputSoal.classList.remove('active');
     jawaban.classList.remove('active');
   }
-  if (e.target.classList.contains('hystory-bars')) {return;
+  if (e.target.classList.contains('hystory-bars')) {
+    return;
   }
   if (Array.isArray(isiCalculator.soal[isiCalculator.soal.length -1])) {
     isiCalculator.soal.push('+');
@@ -35,16 +38,8 @@ hystoryBars.addEventListener('click', e => {
   isiCalculator.soal.push([e.target.classList[1]]);
   inputSoal.value = isiCalculator.soal.flat().join('');
 
+    isiCalculator.otak();
     
-  isiCalculator.angka = 0;
-  isiCalculator.angka += parseFloat(isiCalculator.soal[0].join('')); 
-    
-  isiCalculator.soal.map( (element, index) => {
-      if (element == '+' || element == '-' || element == '*' || element == '/') {
-        isiCalculator.jalan = isiCalculator.ganti(element);
-        isiCalculator.jalan(parseFloat(isiCalculator.soal[index+1].join('')));
-      } 
-  });
   jawaban.innerText = isiCalculator.angka;
 });
 
@@ -93,91 +88,52 @@ Calculator.prototype.ganti = function (apa) {
   }
 }
 
+Calculator.prototype.otak = function () {
+  this.angka = 0;
+  this.angka += parseFloat(this.soal[0].join('')); 
+      
+  this.soal.map( (element, index) => {
+    if (element == '+' || element == '-' || element == '*' || element == '/') {
+      this.jalan = this.ganti(element);
+      this.jalan(parseFloat(isiCalculator.soal[index+1].join('')));
+    } 
+  });
+}
+
+Calculator.prototype.penangananTitik = function (jenis) {
+  console.log(jenis);
+  jenis === 'Array' ? this.soal.push(['0', '.']) : this.soal.map( (element) => {
+    return element == '.' ? 'done' : undefined;
+  }) !== 'done' ? this.soal.push('.') : undefined;
+}
+
+Calculator.prototype.numbers = function (number) {
+  if (!Array.isArray(this.soal[this.soal.length-1])) {
+    if (number == '.') {
+      this.penangananTitik('Array'); 
+      return;
+    }
+    this.soal.push([number]);
+    this.jalan(parseFloat(number));
+  } else if (Array.isArray(this.soal[this.soal.length-1])){
+    console.log('done');
+    if (number == '.') {
+      this.penangananTitik('bukan array');
+      return;
+    }
+    this.soal[this.soal.length-1].push(number);
+  }
+}
+
 let isiCalculator = new Calculator(0, []);
 let hasil = 0;
 
 keyboard.addEventListener('click', e => {
-  if (e.target.innerText == '-' && !Array.isArray(isiCalculator.soal[isiCalculator.soal.length-1])) {
-    isiCalculator.soal[isiCalculator.soal.length] = [e.target.innerText];
-    inputSoal.value = isiCalculator.soal.flat().join('');
-    return;
+  if (e.target.classList.contains('number') || e.target.classList.contains('min') || e.target.classList.contains('number')) {
+    isiCalculator.numbers(e.target.innerText);
   }
-  if (e.target.classList.contains('number') ) {
-    if (hasil == 1) {
-      hasil = 0;
-      inputSoal.classList.remove('active');
-      jawaban.classList.remove('active');
-    }
-    if (!Array.isArray(isiCalculator.soal[isiCalculator.soal.length-1])) {
-      if (e.target.innerText == '.') {
-        isiCalculator.soal.push([0 + e.target.innerText]);
-        inputSoal.value = isiCalculator.soal.flat().join('');
-        return;
-      }
-      isiCalculator.soal.push([e.target.innerText]);
-      isiCalculator.jalan(parseFloat(e.target.innerText));
-      nilaiAwal = isiCalculator.angka;
-      jawaban.value = isiCalculator.soal.flat().join('');
-    } else {
-      if (isiCalculator.soal[isiCalculator.soal.length-1][0] == 0 && e.target.innerText == '0') {
-        return;
-      }
-      if (isiCalculator.soal[isiCalculator.soal.length-1][0][1] == '.' && e.target.innerText == '.') {
-        return;
-      } else if (isiCalculator.soal[isiCalculator.soal.length-1] == '0' && e.target.innerText !== '0') {
-        if (e.target.innerText == '.') {
-          isiCalculator.soal[isiCalculator.soal.length-1][0] = '0.';
-          inputSoal.value = isiCalculator.soal.flat().join('');
-          return;
-        }
-        isiCalculator.soal[isiCalculator.soal.length-1] = [e.target.innerText];
-        inputSoal.value = isiCalculator.soal.flat().join('');
-        return;
-      }
-      isiCalculator.soal[isiCalculator.soal.length-1].push(e.target.innerText);
-    }
-      inputSoal.value = isiCalculator.soal.flat().join('');
-      isiCalculator.angka = 0;
-      isiCalculator.angka += parseFloat(isiCalculator.soal[0].join('')); 
-      
-      isiCalculator.soal.map( (element, index) => {
-        if (element == '+' || element == '-' || element == '*' || element == '/') {
-          isiCalculator.jalan = isiCalculator.ganti(element);
-          isiCalculator.jalan(parseFloat(isiCalculator.soal[index+1].join('')));
-        } 
-      });
-      jawaban.innerText = isiCalculator.angka;
-    
-  } else if (e.target.classList.contains('operator')) {
-    if (Array.isArray(isiCalculator.soal[isiCalculator.soal.length-1]) && isiCalculator.soal[isiCalculator.soal.length-1].length == 1 && isiCalculator.soal[isiCalculator.soal.length-1] == '-') {
-        return;    
-    }
-    if (isiCalculator.soal.length == 0) {
-      return;
-    } else if (!Array.isArray(isiCalculator.soal[isiCalculator.soal.length-1])) {
-      isiCalculator.soal[isiCalculator.soal.length-1] = e.target.innerText;
-      inputSoal.value = isiCalculator.soal.flat().join('');
-      return;
-    } else {
-      isiCalculator.soal.push(e.target.innerText);
-      inputSoal.value = isiCalculator.soal.flat().join('');
-    } 
-  } else if (e.target.classList.contains('samadengan')) {
-    if (hasil == 1) {
-      return;
-    }
-    if (!Array.isArray(isiCalculator.soal[isiCalculator.soal.length-1])) {
-      return;
-    }
-    hasil = 1;
-    jawaban.innerText = isiCalculator.angka;
-    inputSoal.classList.add('active');
-    jawaban.classList.add('active');
-    
-    isiCalculator.print(isiCalculator.soal.flat().join(''), isiCalculator.angka);
-    isiCalculator.soal = [];
-    isiCalculator.angka = 0;
-  }
+  inputSoal.value = isiCalculator.soal.flat().join('');
+  jawaban.innerText = isiCalculator.angka;
 });
 
 btnClear.addEventListener('click', () => {
