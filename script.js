@@ -102,18 +102,20 @@ Calculator.prototype.otak = function () {
 
 Calculator.prototype.penangananTitik = function (jenis) {
   console.log(jenis);
-  jenis === 'Array' ? this.soal.push(['0', '.']) : this.soal.map( (element) => {
-    return element == '.' ? 'done' : undefined;
-  }) !== 'done' ? this.soal.push('.') : undefined;
+  jenis == 'Array' ? this.soal.push(['0', '.']) : this.soal.map( (element) => {
+    if (element == '.') {
+      return 'done';
+    }
+  }) == 'done' ? undefined : this.soal[this.soal.length-1].push('.');
 }
 
 Calculator.prototype.numbers = function (number) {
   if (!Array.isArray(this.soal[this.soal.length-1])) {
     if (number == '.') {
       this.penangananTitik('Array'); 
-      return;
-    }
+    } else {
     this.soal.push([number]);
+    }
     this.jalan(parseFloat(number));
   } else if (Array.isArray(this.soal[this.soal.length-1])){
     console.log('done');
@@ -125,12 +127,19 @@ Calculator.prototype.numbers = function (number) {
   }
 }
 
+Calculator.prototype.operators = function (operator) {
+  Array.isArray(this.soal[this.soal.length-1]) ? this.soal.push(operator) : this.soal[this.soal.length-1] = operator;
+}
+
 let isiCalculator = new Calculator(0, []);
 let hasil = 0;
 
 keyboard.addEventListener('click', e => {
-  if (e.target.classList.contains('number') || e.target.classList.contains('min') || e.target.classList.contains('number')) {
+  if (e.target.classList.contains('number') || e.target.classList.contains('titik')) {
     isiCalculator.numbers(e.target.innerText);
+    isiCalculator.otak();
+  } else if (e.target.classList.contains('operator')) {
+    isiCalculator.operators(e.target.innerText);
   }
   inputSoal.value = isiCalculator.soal.flat().join('');
   jawaban.innerText = isiCalculator.angka;
