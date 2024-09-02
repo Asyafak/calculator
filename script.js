@@ -46,6 +46,7 @@ hystoryBars.addEventListener('click', e => {
 function Calculator(angka, soal) {
   this.angka = angka;
   this.soal = soal;
+  this.limitTitik = 0;
   this.jalan = this.ganti('+');
 }
 
@@ -91,6 +92,7 @@ Calculator.prototype.ganti = function (apa) {
 Calculator.prototype.otak = function () {
   this.angka = 0;
   this.angka += parseFloat(this.soal[0].join('')); 
+  this.limitTitik = 0;
       
   this.soal.map( (element, index) => {
     if (element == '+' || element == '-' || element == '*' || element == '/') {
@@ -101,12 +103,14 @@ Calculator.prototype.otak = function () {
 }
 
 Calculator.prototype.penangananTitik = function (jenis) {
-  console.log(jenis);
-  jenis == 'Array' ? this.soal.push(['0', '.']) : this.soal.map( (element) => {
-    if (element == '.') {
-      return 'done';
-    }
-  }) == 'done' ? undefined : this.soal[this.soal.length-1].push('.');
+  jenis == 'Array' ? (this.soal.push(['0', '.']), this.limitTitik = 1) : this.soal[this.soal.length-1].map( (element) => {
+    element == '.' ? this.limitTitik = 1 : undefined;
+  });
+  this.limitTitik == 0 ? this.soal[this.soal.length-1].push('.') : undefined;
+}
+
+Calculator.prototype.penangananNol = function (number) {
+  number !== '0' && this.soal[this.soal.length-1].length == 1 ? this.soal[this.soal.length-1][0] = number : this.soal[this.soal.length-1][1] == '.' ? this.soal[this.soal.length-1].push(number) : undefined;
 }
 
 Calculator.prototype.numbers = function (number) {
@@ -117,13 +121,14 @@ Calculator.prototype.numbers = function (number) {
     this.soal.push([number]);
     }
     this.jalan(parseFloat(number));
-  } else if (Array.isArray(this.soal[this.soal.length-1])){
-    console.log('done');
+  } else if (Array.isArray(this.soal[this.soal.length-1])) {
     if (number == '.') {
       this.penangananTitik('bukan array');
-      return;
-    }
+    } else if (this.soal[this.soal.length-1][0] == '0') {
+      this.penangananNol(number);
+    } else {
     this.soal[this.soal.length-1].push(number);
+    }
   }
 }
 
@@ -155,7 +160,7 @@ btnClear.addEventListener('click', () => {
 btnDelete.addEventListener('click', () => {
   if (Array.isArray(isiCalculator.soal[isiCalculator.soal.length-1])) {
     if (isiCalculator.soal[isiCalculator.soal.length-1].length > 1) {
-      isiCalculator.soal[isiCalculator.soal.length-1].pop();
+      isiCalculator.soal[isiCalculator.soal.length-1].pop() == '.' ? isiCalculator.limitTitik = 0 : undefined;
     } else {
       isiCalculator.soal.pop();
     }
