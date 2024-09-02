@@ -23,8 +23,8 @@ btnClearHystory.addEventListener('click', () => {
 
 // function hystory bars
 hystoryBars.addEventListener('click', e => {
-  if (hasil == 1) {
-    hasil = 0;
+  if (this.hasil == 1) {
+    this.hasil = 0;
     inputSoal.classList.remove('active');
     jawaban.classList.remove('active');
   }
@@ -38,7 +38,7 @@ hystoryBars.addEventListener('click', e => {
   isiCalculator.soal.push([e.target.classList[1]]);
   inputSoal.value = isiCalculator.soal.flat().join('');
 
-    isiCalculator.otak();
+  isiCalculator.otak();
     
   jawaban.innerText = isiCalculator.angka;
 });
@@ -47,6 +47,7 @@ function Calculator(angka, soal) {
   this.angka = angka;
   this.soal = soal;
   this.limitTitik = 0;
+  this.hasil = 0;
   this.jalan = this.ganti('+');
 }
 
@@ -136,18 +137,43 @@ Calculator.prototype.operators = function (operator) {
   Array.isArray(this.soal[this.soal.length-1]) ? this.soal.push(operator) : this.soal[this.soal.length-1] = operator;
 }
 
+Calculator.prototype.samadengan = function () {
+  if (this.hasil == 1) {
+      return;
+    }
+    if (!Array.isArray(this.soal[this.soal.length-1])) {
+      return;
+    }
+    this.hasil = 1;
+    jawaban.innerText = this.angka;
+    inputSoal.classList.add('active');
+    jawaban.classList.add('active');
+    
+    this.print(this.soal.flat().join(''), this.angka);
+    this.soal = [];
+    this.angka = 0;
+}
+
 let isiCalculator = new Calculator(0, []);
-let hasil = 0;
 
 keyboard.addEventListener('click', e => {
+  if (isiCalculator.hasil == 1) {
+      isiCalculator.hasil = 0;
+      inputSoal.classList.remove('active');
+      jawaban.classList.remove('active');
+    }
   if (e.target.classList.contains('number') || e.target.classList.contains('titik')) {
     isiCalculator.numbers(e.target.innerText);
     isiCalculator.otak();
   } else if (e.target.classList.contains('operator')) {
     isiCalculator.operators(e.target.innerText);
-  }
+  } 
   inputSoal.value = isiCalculator.soal.flat().join('');
   jawaban.innerText = isiCalculator.angka;
+  
+  if (e.target.classList.contains('samadengan')) {
+    isiCalculator.samadengan();
+  }
 });
 
 btnClear.addEventListener('click', () => {
@@ -160,14 +186,15 @@ btnClear.addEventListener('click', () => {
 btnDelete.addEventListener('click', () => {
   if (Array.isArray(isiCalculator.soal[isiCalculator.soal.length-1])) {
     if (isiCalculator.soal[isiCalculator.soal.length-1].length > 1) {
-      isiCalculator.soal[isiCalculator.soal.length-1].pop() == '.' ? isiCalculator.limitTitik = 0 : undefined;
+      isiCalculator.soal[isiCalculator.soal.length-1].pop();
     } else {
       isiCalculator.soal.pop();
     }
   } else {
     isiCalculator.soal.pop();
+    isiCalculator.otak();
   }
 
   inputSoal.value = isiCalculator.soal.flat().join('');
-  jawaban.innerText = '';
+  jawaban.innerText = isiCalculator.angka;
 });
