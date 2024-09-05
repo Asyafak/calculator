@@ -134,7 +134,7 @@ Calculator.prototype.numbers = function (number) {
 }
 
 Calculator.prototype.operators = function (operator) {
-  Array.isArray(this.soal[this.soal.length-1]) ? this.soal.push(operator) : this.soal[this.soal.length-1] = operator;
+  Array.isArray(this.soal[this.soal.length-1]) ? this.soal.push(operator) : operator == '-' ? this.soal.push(['-']) : this.soal[this.soal.length-1] = operator;
 }
 
 Calculator.prototype.samadengan = function () {
