@@ -23,8 +23,8 @@ btnClearHystory.addEventListener('click', () => {
 
 // function hystory bars
 hystoryBars.addEventListener('click', e => {
-  if (this.hasil == 1) {
-    this.hasil = 0;
+  if (this.reset == 1) {
+    this.reset = 0;
     inputSoal.classList.remove('active');
     jawaban.classList.remove('active');
   }
@@ -40,15 +40,16 @@ hystoryBars.addEventListener('click', e => {
 
   isiCalculator.otak();
     
-  jawaban.innerText = isiCalculator.angka;
+  jawaban.innerText = isiCalculator.hasil;
 });
 
-function Calculator(angka, soal) {
-  this.angka = angka;
+function Calculator(hasil, soal) {
+  this.hasil = hasil;
+  this.angka = [];
+  this.operasi = []
   this.soal = soal;
   this.limitTitik = 0;
-  this.hasil = 0;
-  this.jalan = this.ganti('+');
+  this.reset = 0;
 }
 
 Calculator.prototype.print = function (soal, jawaban) {
@@ -62,45 +63,33 @@ Calculator.prototype.print = function (soal, jawaban) {
   hystoryBars.appendChild(tagBaru);
 }
 
-Calculator.prototype.tambah = function (t) {
-  this.angka += t;
-}
-
-Calculator.prototype.kurang = function (ku) {
-  this.angka -= ku;
-}
-
-Calculator.prototype.kali = function (ka) {
-  this.angka *= ka;
-}
-
-Calculator.prototype.bagi = function (b) {
-  this.angka /= b;
-}
-
-Calculator.prototype.ganti = function (apa) {
-  if (apa == '+') {
-    return this.tambah;
-  } else if (apa == '-') {
-    return this.kurang;
-  } else if (apa == '*') {
-    return this.kali;
-  } else if (apa == '/') {
-    return this.bagi;
+Calculator.prototype.operasikan = function (operator, angka) {
+  if (operator == '+' || operator == undefined) {
+    this.hasil += angka;
+  } else if (operator == '-') {
+    this.hasil -= angka;
+  } else if (operator == '×') {
+    this.hasil *= angka;
+  } else if (operator == '÷') {
+    this.hasil /= angka;
   }
 }
 
 Calculator.prototype.otak = function () {
-  this.angka = 0;
-  this.angka += parseFloat(this.soal[0].join('')); 
+  this.hasil = 0;
   this.limitTitik = 0;
-      
-  this.soal.map( (element, index) => {
-    if (element == '+' || element == '-' || element == '*' || element == '/') {
-      this.jalan = this.ganti(element);
-      this.jalan(parseFloat(isiCalculator.soal[index+1].join('')));
-    } 
+  this.operasi = this.soal.filter( op => {
+    return !Array.isArray(op);
   });
+      
+  this.angka = this.soal.filter( int => {
+    return Array.isArray(int);
+  }).map( (int, index) => {
+    
+    this.operasikan(this.operasi[index-1], parseFloat(int.join('')));
+    console.log(`ini angka:${int.join("")}, ini index:${index}, ini operasi${this.operasi[index-1]}`);
+  });
+  
 }
 
 Calculator.prototype.penangananTitik = function (jenis) {
@@ -121,7 +110,6 @@ Calculator.prototype.numbers = function (number) {
     } else {
     this.soal.push([number]);
     }
-    this.jalan(parseFloat(number));
   } else if (Array.isArray(this.soal[this.soal.length-1])) {
     if (number == '.') {
       this.penangananTitik('bukan array');
@@ -138,38 +126,38 @@ Calculator.prototype.operators = function (operator) {
 }
 
 Calculator.prototype.samadengan = function () {
-  if (this.hasil == 1) {
+  if (this.reset == 1) {
       return;
     }
     if (!Array.isArray(this.soal[this.soal.length-1])) {
       return;
     }
-    this.hasil = 1;
-    jawaban.innerText = this.angka;
+    this.reset = 1;
+    jawaban.innerText = this.hasil;
     inputSoal.classList.add('active');
     jawaban.classList.add('active');
     
-    this.print(this.soal.flat().join(''), this.angka);
+    this.print(this.soal.flat().join(''), this.hasil);
     this.soal = [];
-    this.angka = 0;
+    this.hasil = 0;
 }
 
 let isiCalculator = new Calculator(0, []);
 
 keyboard.addEventListener('click', e => {
-  if (isiCalculator.hasil == 1) {
-      isiCalculator.hasil = 0;
+  if (isiCalculator.reset == 1) {
+      isiCalculator.reset = 0;
       inputSoal.classList.remove('active');
       jawaban.classList.remove('active');
     }
-  if (e.target.classList.contains('number') || e.target.classList.contains('titik')) {
+  if (e.target.classList.contains('number')) {
     isiCalculator.numbers(e.target.innerText);
     isiCalculator.otak();
   } else if (e.target.classList.contains('operator')) {
     isiCalculator.operators(e.target.innerText);
   } 
   inputSoal.value = isiCalculator.soal.flat().join('');
-  jawaban.innerText = isiCalculator.angka;
+  jawaban.innerText = isiCalculator.hasil;
   
   if (e.target.classList.contains('samadengan')) {
     isiCalculator.samadengan();
@@ -178,7 +166,7 @@ keyboard.addEventListener('click', e => {
 
 btnClear.addEventListener('click', () => {
   isiCalculator.soal = [];
-  isiCalculator.angka = 0;
+  isiCalculator.hasil = 0;
   inputSoal.value = '';
   jawaban.innerText = '';
 });
@@ -196,5 +184,6 @@ btnDelete.addEventListener('click', () => {
   }
 
   inputSoal.value = isiCalculator.soal.flat().join('');
-  jawaban.innerText = isiCalculator.angka;
+  jawaban.innerText = isiCalculator.hasil;
 });
+
