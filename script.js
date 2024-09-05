@@ -31,13 +31,10 @@ hystoryBars.addEventListener('click', e => {
   if (e.target.classList.contains('hystory-bars')) {
     return;
   }
-  if (Array.isArray(isiCalculator.soal[isiCalculator.soal.length -1])) {
-    isiCalculator.soal.push('+');
-  }
   
-  isiCalculator.soal.push([e.target.classList[1]]);
   inputSoal.value = isiCalculator.soal.flat().join('');
 
+  isiCalculator.soalHystory(e.target.classList[1]);
   isiCalculator.otak();
     
   jawaban.innerText = isiCalculator.hasil;
@@ -75,6 +72,14 @@ Calculator.prototype.operasikan = function (operator, angka) {
   }
 }
 
+Calculator.prototype.soalHystory = function (number) {
+  if (Array.isArray(this.soal[this.soal.length -1])) {
+    this.soal[this.soal.length -1][0] == '-' ? this.soal[this.soal.length-1].push(number) : (this.soal.push('+'), this.soal.push([number]));
+  } else {
+    this.soal.push([number]);
+  }
+}
+
 Calculator.prototype.otak = function () {
   this.hasil = 0;
   this.limitTitik = 0;
@@ -85,9 +90,7 @@ Calculator.prototype.otak = function () {
   this.angka = this.soal.filter( int => {
     return Array.isArray(int);
   }).map( (int, index) => {
-    
     this.operasikan(this.operasi[index-1], parseFloat(int.join('')));
-    console.log(`ini angka:${int.join("")}, ini index:${index}, ini operasi${this.operasi[index-1]}`);
   });
   
 }
