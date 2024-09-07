@@ -139,7 +139,7 @@ Calculator.prototype.numbers = function (number) {
 }
 
 Calculator.prototype.operators = function (operator) {
-  if (this.soal[this.soal.length-1][0] == '-' && number == '-' && this.soal[this.soal.length-1].length == 1) {
+  if (this.soal[this.soal.length-1][0] == '-' && operator == '-' && this.soal[this.soal.length-1].length == 1) {
     return;
   }
   Array.isArray(this.soal[this.soal.length-1]) ? this.soal.push(operator) : operator == '-' ? this.soal.push(['-']) : this.soal[this.soal.length-1] = operator;
