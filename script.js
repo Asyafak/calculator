@@ -46,6 +46,7 @@ function Calculator(hasil, soal) {
   this.operasi = []
   this.soal = soal;
   this.limitTitik = 0;
+  this.limitMin = 0;
   this.reset = 0;
 }
 
@@ -92,14 +93,25 @@ Calculator.prototype.otak = function () {
   }).map( (int, index) => {
     this.operasikan(this.operasi[index-1], parseFloat(int.join('')));
   });
-  
+}
+
+Calculator.prototype.penanganan = function (jenis, limit) {
+  this.soal[this.soal.length-1].map( (element) => {
+    element == jenis ? limit = 1 : limit = 0;
+  });
+  console.log(limit);
+  return limit;
 }
 
 Calculator.prototype.penangananTitik = function (jenis) {
-  jenis == 'Array' ? (this.soal.push(['0', '.']), this.limitTitik = 1) : this.soal[this.soal.length-1].map( (element) => {
-    element == '.' ? this.limitTitik = 1 : undefined;
-  });
-  this.limitTitik == 0 ? this.soal[this.soal.length-1].push('.') : undefined;
+  if (jenis == 'Array') {
+    this.soal.push(['0', '.']);
+    this.limitTitik = 1;
+  } else {
+    this.limitTitik = this.penanganan('.', this.limitTitik);
+    console.log(this.limitTitik);
+    this.limitTitik == 0 ? this.soal[this.soal.length-1].push('.') : undefined;
+  }
 }
 
 Calculator.prototype.penangananNol = function (number) {
@@ -113,11 +125,13 @@ Calculator.prototype.numbers = function (number) {
     } else {
     this.soal.push([number]);
     }
-  } else if (Array.isArray(this.soal[this.soal.length-1])) {
+  } else {
     if (number == '.') {
       this.penangananTitik('bukan array');
     } else if (this.soal[this.soal.length-1][0] == '0') {
       this.penangananNol(number);
+    } else if (this.soal[this.soal.length-1][0] == '-' && number == '-') {
+      this.soal[this.soal.length-1].length == 1 ? undefined : this.soal.push('-');
     } else {
     this.soal[this.soal.length-1].push(number);
     }
@@ -125,6 +139,9 @@ Calculator.prototype.numbers = function (number) {
 }
 
 Calculator.prototype.operators = function (operator) {
+  if (this.soal[this.soal.length-1][0] == '-' && number == '-' && this.soal[this.soal.length-1].length == 1) {
+    return;
+  }
   Array.isArray(this.soal[this.soal.length-1]) ? this.soal.push(operator) : operator == '-' ? this.soal.push(['-']) : this.soal[this.soal.length-1] = operator;
 }
 
@@ -153,14 +170,14 @@ keyboard.addEventListener('click', e => {
       inputSoal.classList.remove('active');
       jawaban.classList.remove('active');
     }
-  if (e.target.classList.contains('number')) {
+  if (e.target.classList.contains('number') || e.target.classList.contains('min')) {
     isiCalculator.numbers(e.target.innerText);
     isiCalculator.otak();
   } else if (e.target.classList.contains('operator')) {
     isiCalculator.operators(e.target.innerText);
   } 
   inputSoal.value = isiCalculator.soal.flat().join('');
-  jawaban.innerText = isiCalculator.hasil;
+  isNaN(isiCalculator.hasil) ? undefined : jawaban.innerText = isiCalculator.hasil;
   
   if (e.target.classList.contains('samadengan')) {
     isiCalculator.samadengan();
@@ -187,6 +204,6 @@ btnDelete.addEventListener('click', () => {
   }
 
   inputSoal.value = isiCalculator.soal.flat().join('');
-  jawaban.innerText = isiCalculator.hasil;
+  isNaN(isiCalculator.hasil) ? undefined : jawaban.innerText = isiCalculator.hasil;
 });
 
