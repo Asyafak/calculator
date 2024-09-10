@@ -23,8 +23,8 @@ btnClearHystory.addEventListener('click', () => {
 
 // function hystory bars
 hystoryBars.addEventListener('click', e => {
-  if (this.reset == 1) {
-    this.reset = 0;
+  if (isiCalculator.reset == 1) {
+    isiCalculator.reset = 0;
     inputSoal.classList.remove('active');
     jawaban.classList.remove('active');
   }
@@ -62,20 +62,26 @@ Calculator.prototype.print = function (soal, jawaban) {
 }
 
 Calculator.prototype.operasikan = function (operator, angka) {
-  if (operator == '+' || operator == undefined) {
-    this.hasil += angka;
-  } else if (operator == '-') {
-    this.hasil -= angka;
-  } else if (operator == '×') {
-    this.hasil *= angka;
-  } else if (operator == '÷') {
-    this.hasil /= angka;
+  switch (operator) {
+    case '+':
+    case undefined:
+      this.hasil += angka;
+      break;
+    case '-':
+      this.hasil -= angka;
+      break;
+    case '×':
+      this.hasil *= angka;
+      break;
+    case '÷':
+      this.hasil /= angka;
+      break;
   }
 }
 
 Calculator.prototype.soalHystory = function (number) {
   if (Array.isArray(this.soal[this.soal.length -1])) {
-    this.soal[this.soal.length -1][0] == '-' ? this.soal[this.soal.length-1].push(number) : (this.soal.push('+'), this.soal.push([number]));
+    number < 0 && this.soal[this.soal.length-1].length == 1 ? this.soal[this.soal.length-1] = [number] : this.soal[this.soal.length -1][0] == '-' && this.soal[this.soal.length-1].length == 1 ? this.soal[this.soal.length-1].push(number) : (this.soal.push('+'), this.soal.push([number]));
   } else {
     this.soal.push([number]);
   }
@@ -99,7 +105,6 @@ Calculator.prototype.penanganan = function (jenis, limit) {
   this.soal[this.soal.length-1].map( (element) => {
     element == jenis ? limit = 1 : limit = 0;
   });
-  console.log(limit);
   return limit;
 }
 
@@ -109,7 +114,6 @@ Calculator.prototype.penangananTitik = function (jenis) {
     this.limitTitik = 1;
   } else {
     this.limitTitik = this.penanganan('.', this.limitTitik);
-    console.log(this.limitTitik);
     this.limitTitik == 0 ? this.soal[this.soal.length-1].push('.') : undefined;
   }
 }
@@ -133,7 +137,13 @@ Calculator.prototype.numbers = function (number) {
     } else if (this.soal[this.soal.length-1][0] == '-' && number == '-') {
       this.soal[this.soal.length-1].length == 1 ? undefined : this.soal.push('-');
     } else {
-    this.soal[this.soal.length-1].push(number);
+      switch (number) {
+        case '-':
+          this.soal.push(number);
+          break;
+        default:
+          this.soal[this.soal.length-1].push(number);
+      }
     }
   }
 }
