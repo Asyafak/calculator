@@ -37,8 +37,7 @@ body {
 .input-soal {
   text-align: end;
   justify-self: end;
-  width: 90%;
-  font-size: 60px;
+  font-size: 40px;
   margin-right: 1rem;
   border: none;
   background-color: var(--bg-dua);

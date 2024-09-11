@@ -10,6 +10,13 @@ const sideBar = document.querySelector('.side-bar');
 const hystoryBars = document.querySelector('.hystory-bars');
 let tagBaru;
 
+function ngaturBaris() {
+  if (isiCalculator.soal[isiCalculator.soal.length-1].length == 15) {
+    console.log('done');
+    inputSoal.value += '\n';
+  }
+}
+
 //function click button hystory
 btnHystory.addEventListener('click', () => {
   sideBar.classList.toggle('active');
@@ -176,23 +183,51 @@ let isiCalculator = new Calculator(0, []);
 
 keyboard.addEventListener('click', e => {
   if (isiCalculator.reset == 1) {
-      isiCalculator.reset = 0;
-      inputSoal.classList.remove('active');
-      jawaban.classList.remove('active');
-    }
+    isiCalculator.reset = 0;
+    inputSoal.classList.remove('active');
+    jawaban.classList.remove('active');
+  }
+
+  // Memasukkan angka atau operator ke dalam kalkulator
   if (e.target.classList.contains('number') || e.target.classList.contains('min')) {
     isiCalculator.numbers(e.target.innerText);
     isiCalculator.otak();
   } else if (e.target.classList.contains('operator')) {
     isiCalculator.operators(e.target.innerText);
-  } 
-  inputSoal.value = isiCalculator.soal.flat().join('');
-  isNaN(isiCalculator.hasil) ? undefined : jawaban.innerText = isiCalculator.hasil;
+  }
+
+  // Menampilkan soal pada inputSoal
+  inputSoal.value = formatSoal(isiCalculator.soal.flat().join(''));
   
+  // Menampilkan hasil, jika tidak NaN
+  if (!isNaN(isiCalculator.hasil)) {
+    jawaban.innerText = isiCalculator.hasil;
+  }
+
+  // Cek jika tombol "=" ditekan
   if (e.target.classList.contains('samadengan')) {
     isiCalculator.samadengan();
   }
 });
+
+// Fungsi untuk mengatur soal dalam baris-baris
+function formatSoal(soal) {
+  let formattedSoal = '';
+  let charCount = 0;
+
+  for (let i = 0; i < soal.length; i++) {
+    formattedSoal += soal[i];
+    charCount++;
+
+    // Menambah baris baru setiap 15 karakter
+    if (charCount === 15) {
+      formattedSoal += '\n';
+      charCount = 0;
+    }
+  }
+
+  return formattedSoal;
+}
 
 btnClear.addEventListener('click', () => {
   isiCalculator.soal = [];
