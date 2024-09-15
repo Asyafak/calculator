@@ -9,7 +9,7 @@ function Calculator(hasil, soal) {
 }
 
 Calculator.prototype.print = function (soal, jawaban) {
-  tagBaru = document.createElement('div');
+  const tagBaru = document.createElement('div');
   tagBaru.innerHTML = `
     <div class="bar ${jawaban}">
       <p class="hystory-soal ${jawaban}">${soal}</p>
@@ -129,3 +129,5 @@ Calculator.prototype.samadengan = function () {
     this.soal = [];
     this.hasil = 0;
 }
+
+const isiCalculator = new Calculator(0, []);
