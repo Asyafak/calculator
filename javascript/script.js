@@ -22,61 +22,58 @@ btnClearHystory.addEventListener('click', () => {
 
 // function hystory bars
 hystoryBars.addEventListener('click', e => {
-  if (isiCalculator.reset == 1) {
-    isiCalculator.reset = 0;
-    inputSoal.classList.remove('active');
-    jawaban.classList.remove('active');
-  }
+  Calculator.reset === 1 ? resetInput() : undefined;
   if (e.target.classList.contains('hystory-bars')) {
     return;
   }
-  isiCalculator.soalHystory(e.target.classList[1]);
-  isiCalculator.otak();
-  updateUi(isiCalculator.soal, isiCalculator.hasil);
+  Calculator.soalHystory(e.target.classList[1]);
+  Calculator.otak();
+  updateUi(Calculator.soal, Calculator.hasil);
 });
 
 keyboard.addEventListener('click', e => {
-  if (isiCalculator.reset == 1) {
-    isiCalculator.reset = 0;
-    inputSoal.classList.remove('active');
-    jawaban.classList.remove('active');
-  }
-
-  if (e.target.classList.contains('number') || e.target.classList.contains('min')) {
-    isiCalculator.numbers(e.target.innerText);
-    isiCalculator.otak();
-  } else if (e.target.classList.contains('operator')) {
-    isiCalculator.operators(e.target.innerText);
+  Calculator.reset === 1 ? resetInput() : undefined;
+  
+  switch (e.target.dataset.type) {
+    case 'number':
+      Calculator.numbers(e.target.innerText);
+      Calculator.otak();
+      break;
+    case 'titik':
+      Calculator.penangananTitik(e.target.innerText);
+      break;
+    case 'min':
+      Calculator.penangananMin(e.target.innerText);
+      break;
+    case 'operator':
+      Calculator.operators(e.target.innerText);
+      break;
+    case 'samadengan':
+      Calculator.samadengan(e.target.innerText);
+      break;
   }
   
-  updateUi(isiCalculator.soal, isiCalculator.hasil);
-
-  if (e.target.classList.contains('samadengan')) {
-    isiCalculator.samadengan();
-  }
+  updateUi(Calculator.soal, Calculator.hasil);
 });
 
 btnClear.addEventListener('click', () => {
-  isiCalculator.soal = [];
-  isiCalculator.hasil = 0;
+  Calculator.soal = [];
+  Calculator.hasil = 0;
   inputSoal.value = '';
   jawaban.innerText = '';
 });
 
 btnDelete.addEventListener('click', () => {
-  if (Array.isArray(isiCalculator.soal[isiCalculator.soal.length-1])) {
-    if (isiCalculator.soal[isiCalculator.soal.length-1].length > 1) {
-      isiCalculator.soal[isiCalculator.soal.length-1].pop();
+  if (Array.isArray(Calculator.soal[Calculator.soal.length-1])) {
+    if (Calculator.soal[Calculator.soal.length-1].length > 1) {
+      Calculator.soal[Calculator.soal.length-1].pop();
     } else {
-      isiCalculator.soal.pop();
+      Calculator.soal.pop();
     }
   } else {
-    isiCalculator.soal.pop();
-    isiCalculator.otak();
+    Calculator.soal.pop();
+    Calculator.otak();
   }
 
-  updateUi(isiCalculator.soal, isiCalculator.hasil);
+  updateUi(Calculator.soal, Calculator.hasil);
 });
-
-
-    
