@@ -23,12 +23,13 @@ btnClearHystory.addEventListener('click', () => {
 // function hystory bars
 hystoryBars.addEventListener('click', e => {
   Calculator.reset === 1 ? resetInput() : undefined;
-  if (e.target.classList.contains('hystory-bars')) {
-    return;
-  }
-  Calculator.soalHystory(e.target.classList[1]);
+  if (e.target.dataset.jawaban) {
+  Calculator.soalHystory(e.target.dataset.jawaban);
   Calculator.otak();
   updateUi(Calculator.soal, Calculator.hasil);
+  } else {
+    return;
+  }
 });
 
 keyboard.addEventListener('click', e => {

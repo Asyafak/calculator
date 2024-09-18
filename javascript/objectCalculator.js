@@ -11,13 +11,14 @@ const Calculator = new class Calculator {
   
   print(soal, jawaban) {
     const tagBaru = document.createElement('div');
+    tagBaru.classList.add('bar');
+    tagBaru.setAttribute('data-jawaban', jawaban);
     tagBaru.innerHTML = `
-      <div class="bar ${jawaban}">
-        <p class="hystory-soal ${jawaban}">${soal}</p>
-        <p class="hystory-jawaban ${jawaban}">=${jawaban}</p>
-      </div>
+      <p class="hystory-soal" data-jawaban="${jawaban}">${soal}</p>
+      <p class="hystory-jawaban" data-jawaban="${jawaban}">=${jawaban}</p>
     `;
     hystoryBars.appendChild(tagBaru);
+    this.soal = [];
   }
 
   operasikan(operator, angka) {
@@ -40,7 +41,7 @@ const Calculator = new class Calculator {
 
   soalHystory(number) {
     if (Array.isArray(this.soal[this.soal.length -1])) {
-      number < 0 && this.soal[this.soal.length-1].length == 1 ? this.soal[this.soal.length-1] = [number] : this.soal[this.soal.length -1][0] == '-' && this.soal[this.soal.length-1].length == 1 ? this.soal[this.soal.length-1].push(number) : (this.soal.push('+'), this.soal.push([number]));
+      number < 0 && this.soal[this.soal.length-1].length == 1 && this.soal[this.soal.length -1][0] == '-' ? this.soal[this.soal.length-1] = [number] : (this.soal.push('+'), this.soal.push([number]));
     } else {
       this.soal.push([number]);
     }
