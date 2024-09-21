@@ -5,11 +5,11 @@ class UIManager {
   }
   
   equals (reset, hasil, soal) {
-    if (this.reset == 1 || !Array.isArray(this.soal[this.soal.length-1])) {
+    if (reset == 1 || !Array.isArray(soal[soal.length-1])) {
         return;
       }
     inputHandler.reset = 1;
-    jawaban.innerText = hasil;
+    this.jawaban.innerText = hasil;
     this.inputSoal.classList.add('active');
     this.jawaban.classList.add('active');
     
@@ -24,15 +24,13 @@ class UIManager {
       <p class="hystory-soal" data-jawaban="${jawaban}">${soal}</p>
       <p class="hystory-jawaban" data-jawaban="${jawaban}">=${jawaban}</p>
     `;
-    hystoryBars.appendChild(tagBaru);
+    hystoryManager.hystoryBars.appendChild(tagBaru);
     inputHandler.soal = [];
   }
   
   updateUi (soal, hasil) {
     this.inputSoal.value = this.formatSoal(soal.flat().join(''));
     !isNaN(inputHandler.hasil) ? this.jawaban.innerText = hasil : undefined;
-    inputHandler.soal = [];
-    inputHandler.hasil = 0;
   }
   
   formatSoal (soal) {

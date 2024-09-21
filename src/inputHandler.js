@@ -12,11 +12,7 @@ class InputHandler {
   
     switch (e.target.dataset.type) {
       case 'number':
-        this.numbersHendler(e.target.innerText);
-        calculator.otak(this.soal);
-        break;
-      case 'zero':
-        this.zeroHendler(e.target.innerText);
+        this.numbersHandler(e.target.innerText);
         calculator.otak(this.soal);
         break;
       case 'titik':
@@ -36,19 +32,18 @@ class InputHandler {
     uiManager.updateUi(this.soal, this.hasil);
   }
   
-  inputClear () {
+  inputClear = () => {
     this.soal = [];
     this.hasil = 0;
-    inputSoal.value = '';
-    jawaban.innerText = '';
+    uiManager.inputSoal.value = '';
+    uiManager.jawaban.innerText = '';
   }
   
-  inputDel () {
+  inputDel = () => {
     if (Array.isArray(this.soal[this.soal.length-1])) {
       this.soal[this.soal.length-1].length > 1 ? this.soal[this.soal.length-1].pop() : this.soal.pop();
     } else {
       this.soal.pop();
-      calculator.otak();
     }
 
     uiManager.updateUi(this.soal, this.hasil);
@@ -78,8 +73,7 @@ class InputHandler {
     }
   }
   
-  zeroHendler (number) {
-    console.log(this.soal)
+  numbersHandler (number) {
     if (!Array.isArray(this.soal[this.soal.length-1])) {
       this.soal.push([number]);
     } else {

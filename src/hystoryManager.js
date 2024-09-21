@@ -4,10 +4,10 @@ class HystoryManager {
     this.hystoryBars = document.querySelector('.hystory-bars');
   }
   
-  barsClick (e) {
+  barsClick = e => {
     inputHandler.reset === 1 ? uiManager.resetInput() : undefined;
     if (e.target.dataset.jawaban) {
-      this.soalHystory(e.target.dataset.jawaban);
+      this.soalHystory(e.target.dataset.jawaban, inputHandler.soal);
       calculator.otak(inputHandler.soal);
       uiManager.updateUi(calculator.soal, calculator.hasil);
     } else {
@@ -15,19 +15,19 @@ class HystoryManager {
     }
   }
 
-  soalHystory(number, soal) {
+  soalHystory (number, soal) {
     if (Array.isArray(soal[soal.length -1])) {
-      number < 0 && soal[soal.length-1].length == 1 && soal[soal.length -1][0] == '-' ? calculator.soal[calculator.soal.length-1] = [number] : (calculator.soal.push('+'), calculator.soal.push([number]));
+      number < 0 && soal[soal.length-1].length == 1 && soal[soal.length -1][0] == '-' ? inputHandler.soal[inputHandler.soal.length-1] = [number] : (inputHandler.soal.push('+'), inputHandler.soal.push([number]));
     } else {
-      calculator.soal.push([number]);
+      inputHandler.soal.push([number]);
     }
   }
   
-  clearHystory () {
+  clearHystory = () => {
     this.hystoryBars.innerHTML = '';
   }
   
-  innerHystory () {
+  innerHystory = () => {
     this.sideBar.classList.toggle('active');
     this.sideBar.classList.contains('active') ? btnHystory.innerText = 'keyboard' : btnHystory.innerText = 'hystory';
   }
