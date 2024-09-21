@@ -7,12 +7,16 @@ class InputHandler {
     this.reset = 0;
   }
   
-  keyboardClick (e) {
+  keyboardClick = e => {
     this.reset === 1 ? uiManager.resetInput() : undefined;
   
     switch (e.target.dataset.type) {
       case 'number':
         this.numbersHendler(e.target.innerText);
+        calculator.otak(this.soal);
+        break;
+      case 'zero':
+        this.zeroHendler(e.target.innerText);
         calculator.otak(this.soal);
         break;
       case 'titik':
@@ -74,7 +78,8 @@ class InputHandler {
     }
   }
   
-  numbersHendler (number) {
+  zeroHendler (number) {
+    console.log(this.soal)
     if (!Array.isArray(this.soal[this.soal.length-1])) {
       this.soal.push([number]);
     } else {
@@ -82,7 +87,7 @@ class InputHandler {
     }
   }
   
-  operatorsHendler (operator) {
+  operatorsHandler (operator) {
     Array.isArray(this.soal[this.soal.length-1]) ? this.soal.push(operator) : this.soal[this.soal.length-1] = operator;
   }
 }
