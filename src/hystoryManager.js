@@ -1,11 +1,15 @@
-class HystoryManager {
+console.log(HystoryManager)
+console.log(uiManager)
+
+export class HystoryManager {
   constructor () {
+    this.btnHystory = document.getElementById('hystory');
     this.sideBar = document.querySelector('.side-bar');
     this.hystoryBars = document.querySelector('.hystory-bars');
   }
   
   barsClick = e => {
-    inputHandler.reset === 1 ? uiManager.resetInput() : undefined;
+    uiManager.reset === 1 ? uiManager.resetInput() : undefined;
     if (e.target.dataset.jawaban) {
       this.soalHystory(e.target.dataset.jawaban, inputHandler.soal);
       calculator.otak(inputHandler.soal);
@@ -29,6 +33,6 @@ class HystoryManager {
   
   innerHystory = () => {
     this.sideBar.classList.toggle('active');
-    this.sideBar.classList.contains('active') ? btnHystory.innerText = 'keyboard' : btnHystory.innerText = 'hystory';
+    this.sideBar.classList.contains('active') ? this.btnHystory.innerText = 'keyboard' : this.btnHystory.innerText = 'hystory';
   }
 }

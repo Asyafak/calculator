@@ -1,30 +1,31 @@
-class Calculator {
+export class Calculator {
   constructor() {
     this.angka = [];
     this.operasi = [];
+    this.hasil = 0;
   }
 
   operasikan (operator, angka) {
     switch (operator) {
       case '+':
       case undefined:
-        inputHandler.hasil += angka;
+        this.hasil += angka;
         break;
       case '-':
-        inputHandler.hasil -= angka;
+        this.hasil -= angka;
         break;
       case '×':
-        inputHandler.hasil *= angka;
+        this.hasil *= angka;
         break;
       case '÷':
-        inputHandler.hasil /= angka;
+        this.hasil /= angka;
         break;
     }
   }
 
   otak (soal) {
-    inputHandler.hasil = 0;
-    inputHandler.limitTitik = 0;
+    this.hasil = 0;
+    // inputHandler.limitTitik = 0;
     this.operasi = soal.filter( op => {
       return !Array.isArray(op);
     });

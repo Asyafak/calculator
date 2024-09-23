@@ -1,14 +1,17 @@
-class InputHandler {
+import { Calculator } from './calculator.js';
+import { uiManager } from './UIManager.js';
+
+const calculator = new Calculator();
+
+export class InputHandler {
   constructor(){
-    this.hasil = 0;
     this.soal = [];
     this.limitTitik = 0;
     this.limitMin = 0;
-    this.reset = 0;
   }
   
   keyboardClick = e => {
-    this.reset === 1 ? uiManager.resetInput() : undefined;
+    uiManager.reset === 1 ? uiManager.resetInput() : undefined;
   
     switch (e.target.dataset.type) {
       case 'number':
@@ -25,16 +28,17 @@ class InputHandler {
         this.operatorsHandler(e.target.innerText);
         break;
       case 'equals':
-        uiManager.equals(this.reset, this.hasil, this.soal);
+        uiManager.equals(calculator.hasil, this.soal);
+        this.soal = [];
         break;
     }
   
-    uiManager.updateUi(this.soal, this.hasil);
+    uiManager.updateUi(this.soal, calculator.hasil);
   }
   
   inputClear = () => {
     this.soal = [];
-    this.hasil = 0;
+    calculator.hasil = 0;
     uiManager.inputSoal.value = '';
     uiManager.jawaban.innerText = '';
   }
@@ -46,7 +50,7 @@ class InputHandler {
       this.soal.pop();
     }
 
-    uiManager.updateUi(this.soal, this.hasil);
+    uiManager.updateUi(this.soal, calculator.hasil);
   }
   
   penanganan (jenis) {

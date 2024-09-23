@@ -1,29 +1,45 @@
-// class Coba {
-//   constructor(name){
-//     this.name = name;
-//   }
+function buatPiramidaIterasi(tinggi) { for (let i = 1; i <= tinggi; i++) { // Cetak spasi di awal baris 
+  let spasi = " ".repeat(tinggi - i); // Cetak bintang di tengah baris 
+  let bintang = "*".repeat(2 * i - 1);
+  console.log(spasi + bintang); 
+  } 
   
-//   sayHello (name) {
-//     console.log(`hi ${name} saya adalah ${this.name}`);
-//   }
-// }
+}
+  buatPiramidaIterasi(5)
 
-// class Coba2 extends Coba {
-//   constructor(rumah) {
-//     super();
-//     this.rumah = rumah;
-//   }
+class Coba {
+  constructor(name){
+    this.name = name;
+  }
   
-//   sayHello (name) {
-//     console.log(`hi ${coba.name} saya adalah ${this.rumah}`);
-//   }
-// }
+  sayHello (name) {
+    console.log(`hallo ${name} saya adalah ${this.name}`);
+  }
+  
+  ganti (nama) {
+    coba2.name = nama;
+  }
+}
 
-// const coba = new Coba('ahmad');
-// coba.sayHello('kamu')
+class Coba2 extends Coba {
+  constructor(name, rumah) {
+    super(name);
+    this.rumah = rumah;
+  }
+  
+  sayHi (name) {
+    console.log(`hi ${coba.name} saya adalah ${this.name}`);
+  }
+}
 
-// const coba2 = new Coba2('bumi');
-// coba2.sayHello()
+const coba = new Coba('ahmad');
+coba.sayHello('kamu')
+
+const coba2 = new Coba2(coba.name, 'bumi');
+coba2.sayHi('aku')
+
+coba.ganti('conta')
+console.log(coba2.name)
 
 
 

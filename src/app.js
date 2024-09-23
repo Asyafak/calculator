@@ -1,14 +1,16 @@
 const keyboard = document.querySelector('.keyboard');
 
-const btnHystory = document.getElementById('hystory');
 const btnClearHystory = document.querySelector('.btn-clear-hystory');
 const btnClear = document.getElementById('clear');
 const btnDelete = document.getElementById('delete');
 
+import { InputHandler } from './inputHandler.js';
+import { Calculator } from './calculator.js';
+import { HystoryManager } from './hystoryManager.js';
+
 const inputHandler = new InputHandler();
 const calculator = new Calculator();
 const hystoryManager = new HystoryManager();
-const uiManager = new UIManager();
 
 keyboard.addEventListener('click', inputHandler.keyboardClick);
 
@@ -20,4 +22,4 @@ hystoryManager.hystoryBars.addEventListener('click', hystoryManager.barsClick);
 
 btnClearHystory.addEventListener('click', hystoryManager.clearHystory);
 
-btnHystory.addEventListener('click', hystoryManager.innerHystory);
+hystoryManager.btnHystory.addEventListener('click', hystoryManager.innerHystory);

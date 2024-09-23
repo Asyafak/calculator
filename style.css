@@ -149,7 +149,7 @@ body {
   overflow-y: scroll;
   display: flex;
   width: 100%;
-  flex-direction: column;
+  flex-direction: column-reverse;
   text-align: end;
 }
 
