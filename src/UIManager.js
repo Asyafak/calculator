@@ -1,12 +1,9 @@
 import { HystoryManager } from './hystoryManager.js';
 const hystoryManager = new HystoryManager();
 
-console.log(hystoryManager)
-console.log(uiManager)
-
-export const uiManager = new class UIManager extends HystoryManager {
+export class UIManager extends HystoryManager {
   constructor () {
-    super()
+    super();
     this.reset = 0;
     this.inputSoal = document.querySelector('.input-soal');
     this.jawaban = document.querySelector('.jawaban');
@@ -22,6 +19,7 @@ export const uiManager = new class UIManager extends HystoryManager {
     this.jawaban.classList.add('active');
     
     this.print(soal.flat().join(''), hasil);
+    return this.soal = [];
   }
   
   print(soal, jawaban) {
@@ -32,11 +30,12 @@ export const uiManager = new class UIManager extends HystoryManager {
       <p class="hystory-soal" data-jawaban="${jawaban}">${soal}</p>
       <p class="hystory-jawaban" data-jawaban="${jawaban}">=${jawaban}</p>
     `;
-    hystoryManager.hystoryBars.insertBefore(tagBaru, hystoryManager.hystoryBars.firstChild);
+    this.hystoryBars.insertBefore(tagBaru, this.hystoryBars.firstChild);
   }
   
   updateUi (soal, hasil) {
     this.inputSoal.value = this.formatSoal(soal.flat().join(''));
+    console.log('aneh : ' + hasil)
     !isNaN(hasil) ? this.jawaban.innerText = hasil : undefined;
   }
   

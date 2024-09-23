@@ -1,11 +1,11 @@
-function buatPiramidaIterasi(tinggi) { for (let i = 1; i <= tinggi; i++) { // Cetak spasi di awal baris 
-  let spasi = " ".repeat(tinggi - i); // Cetak bintang di tengah baris 
-  let bintang = "*".repeat(2 * i - 1);
-  console.log(spasi + bintang); 
-  } 
+// function buatPiramidaIterasi(tinggi) { for (let i = 1; i <= tinggi; i++) { // Cetak spasi di awal baris 
+//   let spasi = " ".repeat(tinggi - i); // Cetak bintang di tengah baris 
+//   let bintang = "*".repeat(2 * i - 1);
+//   console.log(spasi + bintang); 
+//   } 
   
-}
-  buatPiramidaIterasi(5)
+// }
+//   buatPiramidaIterasi(5)
 
 class Coba {
   constructor(name){
@@ -38,7 +38,7 @@ coba.sayHello('kamu')
 const coba2 = new Coba2(coba.name, 'bumi');
 coba2.sayHi('aku')
 
-coba.ganti('conta')
+coba2.ganti('conta')
 console.log(coba2.name)
 
 

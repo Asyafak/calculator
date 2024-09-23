@@ -1,10 +1,12 @@
 import { Calculator } from './calculator.js';
-import { uiManager } from './UIManager.js';
+import { UIManager } from './UIManager.js';
 
 const calculator = new Calculator();
+const uiManager = new UIManager();
 
-export class InputHandler {
-  constructor(){
+export class InputHandler extends UIManager {
+  constructor() {
+    super();
     this.soal = [];
     this.limitTitik = 0;
     this.limitMin = 0;
@@ -28,8 +30,7 @@ export class InputHandler {
         this.operatorsHandler(e.target.innerText);
         break;
       case 'equals':
-        uiManager.equals(calculator.hasil, this.soal);
-        this.soal = [];
+        this.soal = uiManager.equals(calculator.hasil, this.soal);
         break;
     }
   
