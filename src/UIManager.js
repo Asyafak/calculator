@@ -32,7 +32,6 @@ export class UIManager {
   
   updateUi (soal, hasil) {
     this.inputSoal.value = this.formatSoal(soal.flat().join(''));
-    console.log('aneh : ' + hasil)
     !isNaN(hasil) ? this.jawaban.innerText = hasil : undefined;
   }
   

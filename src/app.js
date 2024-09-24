@@ -71,8 +71,6 @@ hystoryManager.hystoryBars.addEventListener('click', e => {
   if (e.target.dataset.jawaban) {
     soalHystory(e.target.dataset.jawaban, inputHandler.soal);
     calculator.otak(inputHandler.soal);
-    console.log(inputHandler.soal)
-    console.log(calculator.hasil)
     uiManager.updateUi(inputHandler.soal, calculator.hasil);
   } else {
     return;
