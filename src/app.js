@@ -81,6 +81,6 @@ const soalHystory = (number, soal) => {
   if (!Array.isArray(soal[soal.length -1])) {
     inputHandler.soal.push([number]);
   } else {
-    number < 0 && soal[soal.length-1].length == 1 && soal[soal.length -1][0] == '-' ? inputHandler.soal[inputHandler.soal.length-1] = [number] : (inputHandler.soal.push('+'), inputHandler.soal.push([number]));
+    soal[soal.length-1].length == 1 && soal[soal.length -1][0] == '-' ? inputHandler.soal[inputHandler.soal.length-1] = [number] : (inputHandler.soal.push('+'), inputHandler.soal.push([number]));
   }
 }
