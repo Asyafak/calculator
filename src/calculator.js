@@ -25,7 +25,6 @@ export class Calculator {
 
   otak (soal) {
     this.hasil = 0;
-    // inputHandler.limitTitik = 0;
     this.operasi = soal.filter( op => {
       return !Array.isArray(op);
     });

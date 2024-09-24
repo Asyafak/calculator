@@ -1,25 +1,22 @@
-import { HystoryManager } from './hystoryManager.js';
-const hystoryManager = new HystoryManager();
-
-export class UIManager extends HystoryManager {
+export class UIManager {
   constructor () {
-    super();
     this.reset = 0;
+    this.infoEquals = '';
     this.inputSoal = document.querySelector('.input-soal');
     this.jawaban = document.querySelector('.jawaban');
   }
   
   equals (hasil, soal) {
     if (this.reset == 1 || !Array.isArray(soal[soal.length-1])) {
+        this.infoEquals = 'gagal';
         return;
       }
     this.reset = 1;
+    this.infoEquals = 'berhasil';
     this.jawaban.innerText = hasil;
     this.inputSoal.classList.add('active');
     this.jawaban.classList.add('active');
-    
-    this.print(soal.flat().join(''), hasil);
-    return this.soal = [];
+    return this.print(soal.flat().join(''), hasil);
   }
   
   print(soal, jawaban) {
@@ -30,7 +27,7 @@ export class UIManager extends HystoryManager {
       <p class="hystory-soal" data-jawaban="${jawaban}">${soal}</p>
       <p class="hystory-jawaban" data-jawaban="${jawaban}">=${jawaban}</p>
     `;
-    this.hystoryBars.insertBefore(tagBaru, this.hystoryBars.firstChild);
+    return tagBaru;
   }
   
   updateUi (soal, hasil) {
@@ -57,8 +54,8 @@ export class UIManager extends HystoryManager {
   }
 
   resetInput () {
-    this.reset = 0;
     this.inputSoal.classList.remove('active');
     this.jawaban.classList.remove('active');
+    this.reset = 0;
   }
 }
